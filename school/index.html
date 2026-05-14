@@ -3,14 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>The School · Membership Survey</title>
-  <meta name="description" content="Help shape membership at The School — a residency, workspace, and events building in Greenpoint, Brooklyn for art, technology, and culture.">
+  <title>The School · Founding Stewards Application</title>
+  <meta name="description" content="The Convent is selecting its first 100 founding stewards — collaborators who shape this community, financially and energetically. Not a spectator program.">
 
-  <!--
-    Form submits as JSON to https://www.sayinterviews.com/api/school-survey.
-    That endpoint writes to Firestore (school_survey_responses) and emails
-    the result via SendGrid. No Google Form / Formspree / third-party setup.
-  -->
   <script>
     window.SCHOOL_SURVEY_ENDPOINT = "https://www.sayinterviews.com/api/school-survey";
   </script>
@@ -164,6 +159,17 @@
       letter-spacing: -0.035em;
       color: var(--ink);
     }
+    .hero-headline small {
+      display: block;
+      margin-top: 14px;
+      font-family: var(--sans);
+      font-weight: 500;
+      font-size: clamp(15px, 1.4vw, 19px);
+      line-height: 1.4;
+      letter-spacing: 0;
+      color: var(--ink-soft);
+      max-width: 660px;
+    }
 
     .hero-tags {
       display: flex;
@@ -254,6 +260,34 @@
       letter-spacing: 0.16em;
       text-transform: uppercase;
       color: rgba(255, 255, 255, 0.5);
+    }
+
+    /* === INTRO CARD === */
+    .intro {
+      padding: 36px 36px;
+    }
+    .intro p {
+      margin: 0 0 14px;
+      font-family: var(--sans);
+      font-size: 17px;
+      line-height: 1.55;
+      color: var(--ink);
+      max-width: 760px;
+    }
+    .intro p:last-child { margin-bottom: 0; }
+    .intro p em { font-style: italic; color: var(--ink); font-weight: 600; }
+    .intro .lead-num {
+      display: block;
+      font-family: var(--sans);
+      font-weight: 800;
+      font-size: clamp(40px, 5vw, 60px);
+      line-height: 1;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      margin: 0 0 18px;
+    }
+    .intro .lead-num span {
+      color: var(--green-deep);
     }
 
     /* === FORM === */
@@ -350,6 +384,34 @@
       box-shadow: 0 0 0 3px rgba(0, 255, 102, 0.4);
     }
 
+    /* Money range row */
+    .range-row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 10px;
+    }
+    .range-row .dash {
+      color: var(--muted);
+      font-weight: 600;
+      font-family: var(--mono);
+    }
+    .price-prefix {
+      position: relative;
+    }
+    .price-prefix::before {
+      content: "$";
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      font-family: var(--sans);
+      font-size: 16px;
+      pointer-events: none;
+    }
+    .price-prefix input { padding-left: 26px; }
+
     .submit-card {
       grid-column: span 4;
       display: flex;
@@ -394,24 +456,6 @@
       cursor: not-allowed;
       transform: none;
     }
-
-    /* === STATUS BANNER === */
-    .status-banner {
-      grid-column: 1 / -1;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 14px 20px;
-      background: rgba(255, 200, 0, 0.1);
-      border: 1px solid rgba(255, 200, 0, 0.4);
-      border-radius: 12px;
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: #ffd560;
-    }
-    .status-banner.hidden { display: none; }
 
     /* === SUCCESS STATE === */
     .success {
@@ -462,17 +506,18 @@
       .span-4, .span-3, .span-2 { grid-column: span 2; }
       .submit-card { grid-column: span 2; }
       .success { grid-column: span 2; }
-      .status-banner { grid-column: span 2; }
       .section-band { grid-column: span 2; }
     }
     @media (max-width: 580px) {
       .grid { grid-template-columns: 1fr; gap: 12px; }
       .span-4, .span-3, .span-2, .span-1 { grid-column: span 1; }
-      .submit-card, .success, .status-banner, .section-band { grid-column: span 1; }
+      .submit-card, .success, .section-band { grid-column: span 1; }
       .card { padding: 22px; }
-      .hero { padding: 28px 24px; }
+      .hero, .intro { padding: 28px 24px; }
       .submit-card { flex-direction: column; align-items: stretch; }
       .submit-card button { width: 100%; }
+      .range-row { grid-template-columns: 1fr; }
+      .range-row .dash { display: none; }
     }
   </style>
 </head>
@@ -483,13 +528,16 @@
       <!-- HERO -->
       <section class="card hero span-3">
         <div class="hero-top">
-          <div class="mark">M</div>
+          <div class="mark">C</div>
           <div class="hero-meta">
             <strong id="hero-date">—</strong>
             <span id="hero-time">—</span>
           </div>
         </div>
-        <h1 class="hero-headline">THE SCHOOL<br>MEMBERSHIP SURVEY</h1>
+        <h1 class="hero-headline">
+          THE SCHOOL
+          <small>Selecting our first 100 founding stewards. This is your application.</small>
+        </h1>
         <div>
           <div class="hero-tags">
             <span>ART</span><span>TECHNOLOGY</span><span>RESEARCH</span><span>CULTURE</span>
@@ -497,17 +545,14 @@
           <div class="hero-tags" style="margin-top: 4px;">
             <span>GREENPOINT, NYC</span>
           </div>
-          <div class="hero-status"><span class="dot"></span><span>NOW ACCEPTING SIGNAL</span></div>
+          <div class="hero-status"><span class="dot"></span><span>APPLICATIONS OPEN</span></div>
         </div>
       </section>
 
-      <!-- INFO TILE: WHAT THIS IS -->
+      <!-- INFO TILE: WHAT -->
       <aside class="card tile">
-        <div class="eyebrow">
-          <span>WHAT</span><span class="arrow">↗</span>
-        </div>
+        <div class="eyebrow"><span>WHAT</span><span class="arrow">↗</span></div>
         <div class="tile-icon" aria-hidden="true">
-          <!-- folded-paper icon -->
           <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M14 10 H42 L50 18 V54 H14 Z"/>
             <path d="M42 10 V18 H50"/>
@@ -517,16 +562,14 @@
           </svg>
         </div>
         <div class="tile-footer">
-          <strong>A residency &amp; workspace</strong>
-          <span>for art &amp; frontier tech</span>
+          <strong>A nonprofit community</strong>
+          <span>art × frontier tech</span>
         </div>
       </aside>
 
       <!-- INFO TILE: WHO -->
       <aside class="card tile">
-        <div class="eyebrow">
-          <span>WHO</span><span class="arrow">↗</span>
-        </div>
+        <div class="eyebrow"><span>WHO</span><span class="arrow">↗</span></div>
         <div class="tile-icon" aria-hidden="true">
           <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="32" cy="22" r="9"/>
@@ -534,10 +577,18 @@
           </svg>
         </div>
         <div class="tile-footer">
-          <strong>Artists, builders,</strong>
-          <span>researchers, friends</span>
+          <strong>Founding stewards</strong>
+          <span>collaborators, not spectators</span>
         </div>
       </aside>
+
+      <!-- INTRO -->
+      <section class="card intro span-4">
+        <span class="lead-num">100 <span>·</span> founding stewards</span>
+        <p>The Convent is a nonprofit community in a 28,000 sq ft historic building in Greenpoint, Brooklyn — a residency, workspace, and events institution at the intersection of frontier art and technology.</p>
+        <p>We're a small group of collaborators evaluating our first 100 founding stewards: people who shape the community both <em>financially</em> and <em>energetically</em>. Workshops, projects, taste, time — alongside membership dues.</p>
+        <p>This is not a spectator program. If you're looking to passively rent a desk, there are plenty of places that sell that. If you're looking to help shape what culture and technology can be in the same room, keep reading.</p>
+      </section>
 
       <!-- ======================== SECTION: WHO YOU ARE ======================== -->
       <div class="section-band">
@@ -567,19 +618,18 @@
         </div>
       </div>
 
-      <!-- ======================== SECTION: WHAT YOU'D USE IT FOR ======================== -->
+      <!-- ======================== SECTION: WHAT BRINGS YOU HERE ======================== -->
       <div class="section-band">
-        <h2>What you'd use it for</h2>
+        <h2>What brings you here</h2>
         <span class="count">04 — 05</span>
       </div>
 
       <div class="card span-4">
         <div class="q">
-          <span class="q-label">04 / Pick all that apply</span>
+          <span class="q-label">04 / What would you use The School for?</span>
           <div class="opts">
             <label class="opt"><input type="checkbox" name="uses" value="Workspace"><span>Workspace</span></label>
             <label class="opt"><input type="checkbox" name="uses" value="Events"><span>Events</span></label>
-            <label class="opt"><input type="checkbox" name="uses" value="Residency"><span>Residency</span></label>
             <label class="opt"><input type="checkbox" name="uses" value="Studio time"><span>Studio time</span></label>
             <label class="opt"><input type="checkbox" name="uses" value="Sound beds"><span>Sound beds</span></label>
             <label class="opt"><input type="checkbox" name="uses" value="Community"><span>Community</span></label>
@@ -591,16 +641,16 @@
 
       <div class="card span-4">
         <div class="q">
-          <span class="q-label">05 / In your own words</span>
-          <p class="q-help">What would you actually use The School for? The above is a checklist — this is the real version.</p>
-          <textarea name="uses_open" rows="4"></textarea>
+          <span class="q-label">05 / What inspires you about becoming a steward of The School?</span>
+          <p class="q-help">A few sentences — the version that actually pulls you in. This is the answer that helps us read whether the fit is real.</p>
+          <textarea name="inspires" rows="4"></textarea>
         </div>
       </div>
 
       <!-- ======================== SECTION: RHYTHM ======================== -->
       <div class="section-band">
         <h2>Rhythm</h2>
-        <span class="count">06 — 07</span>
+        <span class="count">06 — 08</span>
       </div>
 
       <div class="card span-2">
@@ -627,63 +677,120 @@
         </div>
       </div>
 
+      <div class="card span-4">
+        <div class="q">
+          <span class="q-label">08 / What kind of space?</span>
+          <p class="q-help">Pick the one that fits how you'd actually use it. We won't know what the right mix is until we see how people answer.</p>
+          <div class="opts">
+            <label class="opt"><input type="radio" name="space_type" value="Hot desk"><span>Hot desk</span></label>
+            <label class="opt"><input type="radio" name="space_type" value="Dedicated desk"><span>Dedicated desk</span></label>
+            <label class="opt"><input type="radio" name="space_type" value="Office or studio"><span>Office or studio</span></label>
+            <label class="opt"><input type="radio" name="space_type" value="None of these"><span>None of these</span></label>
+          </div>
+        </div>
+      </div>
+
       <!-- ======================== SECTION: MONEY ======================== -->
       <div class="section-band">
         <h2>Money</h2>
-        <span class="count">08 — 09</span>
+        <span class="count">09</span>
       </div>
 
-      <div class="card span-2">
+      <div class="card span-4">
         <div class="q">
-          <span class="q-label">08 / What would you pay per month?</span>
-          <p class="q-help">Be honest — a number or a range, in dollars.</p>
-          <input type="text" name="price_yes" placeholder="$ …">
+          <span class="q-label">09 / What range would you pay per month?</span>
+          <p class="q-help">Depending on amenities — minimum you'd pay for something basic, maximum you'd stretch to for a setup that's worth it.</p>
+          <div class="range-row">
+            <label class="price-prefix">
+              <input type="text" name="price_min" inputmode="numeric" placeholder="200">
+            </label>
+            <span class="dash">—</span>
+            <label class="price-prefix">
+              <input type="text" name="price_max" inputmode="numeric" placeholder="800">
+            </label>
+          </div>
         </div>
       </div>
 
-      <div class="card span-2">
-        <div class="q">
-          <span class="q-label">09 / What would feel like too much?</span>
-          <p class="q-help">The number that would make you bounce.</p>
-          <input type="text" name="price_no" placeholder="$ …">
-        </div>
-      </div>
-
-      <!-- ======================== SECTION: OPEN ======================== -->
+      <!-- ======================== SECTION: WHAT YOU'D BRING ======================== -->
       <div class="section-band">
-        <h2>Open</h2>
+        <h2>What you'd bring</h2>
         <span class="count">10 — 11</span>
       </div>
 
       <div class="card span-4">
         <div class="q">
-          <span class="q-label">10 / What would make this a yes for you?</span>
-          <textarea name="what_makes_yes" rows="4"></textarea>
+          <span class="q-label">10 / What would you contribute beyond dues?</span>
+          <p class="q-help">Workshops you could lead, projects you'd run, expertise you'd share, work you'd hang on the wall. Founding stewards who can lead programming are weighted accordingly.</p>
+          <textarea name="contribute" rows="4" placeholder="A monthly workshop on … / I'd want to organize … / I can help with …"></textarea>
         </div>
       </div>
 
       <div class="card span-4">
         <div class="q">
-          <span class="q-label">11 / Anything else you want us to know?</span>
+          <span class="q-label">11 / Must-haves and nice-to-haves</span>
+          <p class="q-help">Tie this to your price range above. What's the floor (what would make it worth the minimum), what's the ceiling (what would justify the maximum)?</p>
+          <textarea name="must_haves" rows="4" placeholder="At $X/mo I need …  ·  At $Y/mo I'd want …"></textarea>
+        </div>
+      </div>
+
+      <!-- ======================== SECTION: TWO MORE ======================== -->
+      <div class="section-band">
+        <h2>Two more</h2>
+        <span class="count">12 — 13</span>
+      </div>
+
+      <div class="card span-2">
+        <div class="q">
+          <span class="q-label">12 / Informational session</span>
+          <p class="q-help">We're hosting one in May for founding stewards. RSVP without committing — we'll send details once we have them.</p>
+          <div class="opts">
+            <label class="opt"><input type="radio" name="info_session" value="Yes — RSVP me"><span>Yes — RSVP me</span></label>
+            <label class="opt"><input type="radio" name="info_session" value="Maybe"><span>Maybe</span></label>
+            <label class="opt"><input type="radio" name="info_session" value="Not this time"><span>Not this time</span></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="card span-2">
+        <div class="q">
+          <span class="q-label">13 / Residency interest</span>
+          <p class="q-help">We have a separate, very selective residency program for entrepreneurs and artists that includes a place to stay inside the Convent. By application only.</p>
+          <div class="opts">
+            <label class="opt"><input type="radio" name="residency_interest" value="Yes — tell me more"><span>Yes — tell me more</span></label>
+            <label class="opt"><input type="radio" name="residency_interest" value="Not for me"><span>Not for me</span></label>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======================== SECTION: OPEN ======================== -->
+      <div class="section-band">
+        <h2>Anything else</h2>
+        <span class="count">14</span>
+      </div>
+
+      <div class="card span-4">
+        <div class="q">
+          <span class="q-label">14 / Anything else you want us to know?</span>
           <textarea name="anything_else" rows="4"></textarea>
         </div>
       </div>
 
-      <!-- Honeypot (hidden from humans, bots tend to fill it). -->
+      <!-- Honeypot (off-screen) -->
       <div style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden" aria-hidden="true">
         <label>Website<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
       </div>
 
       <!-- SUBMIT -->
       <section class="card submit-card">
-        <p class="submit-msg" id="submit-msg">Your answers help shape what The School becomes.</p>
-        <button type="submit" id="submit-btn">Send signal →</button>
+        <p class="submit-msg" id="submit-msg">100 stewards. Not a spectator program.</p>
+        <button type="submit" id="submit-btn">Submit application →</button>
       </section>
 
       <!-- SUCCESS STATE -->
       <section class="card success" id="success-card">
-        <h2 class="success-headline">Signal <em>received.</em></h2>
-        <p class="success-sub">Thank you — we read every one of these. If we have questions, we'll be in touch at the email you left.</p>
+        <h2 class="success-headline">Application <em>received.</em></h2>
+        <p class="success-sub">Thank you — we read every one of these. We'll be in touch at the email you left once we've gone through the responses, and ahead of the May informational session if you said yes.</p>
       </section>
     </form>
 
@@ -701,7 +808,6 @@
       const submitMsg = document.getElementById('submit-msg');
       const successCard = document.getElementById('success-card');
 
-      // Live clock in hero.
       const dateEl = document.getElementById('hero-date');
       const timeEl = document.getElementById('hero-time');
       const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
@@ -713,8 +819,6 @@
       }
       tick(); setInterval(tick, 1000);
 
-      // Collect form values into a JSON payload. Multi-select fields (checkboxes)
-      // are sent as arrays. Single-select (radios) and text fields are strings.
       function collect() {
         const fd = new FormData(form);
         const out = {};
@@ -722,8 +826,6 @@
           const values = fd.getAll(key);
           out[key] = values.length > 1 ? values : values[0];
         }
-        // Force the multi-select fields to always be arrays so the server
-        // doesn't have to guess.
         ['uses', 'when'].forEach(k => {
           if (out[k] === undefined) out[k] = [];
           else if (!Array.isArray(out[k])) out[k] = [out[k]];
@@ -748,7 +850,6 @@
             const data = await res.json().catch(() => ({}));
             throw new Error(data.error || ('HTTP ' + res.status));
           }
-          // Success — hide the form scaffolding, show success card.
           form.querySelectorAll('.section-band, .card:not(.success)').forEach(el => {
             el.style.display = 'none';
           });
