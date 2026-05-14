@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>The School · Stewardship Survey</title>
-  <meta name="description" content="The School is selecting its first 100 founding stewards — collaborators who shape this community through some mix of dues and labor. Stewardship is not consumption.">
+  <meta name="description" content="The School is selecting its first 100 founding stewards. Collaborators who shape this community through some mix of dues and labor. No passengers on this spaceship, only crew.">
 
   <script>
     window.SCHOOL_SURVEY_ENDPOINT = "https://www.sayinterviews.com/api/school-survey";
@@ -638,8 +638,8 @@
         <div class="hero-top">
           <div class="mark">C</div>
           <div class="hero-meta">
-            <strong id="hero-date">—</strong>
-            <span id="hero-time">—</span>
+            <strong id="hero-date"></strong>
+            <span id="hero-time"></span>
           </div>
         </div>
         <h1 class="hero-headline">
@@ -678,15 +678,15 @@
       <!-- INTRO -->
       <section class="card intro span-4">
         <span class="lead-num">100 <span>·</span> founding stewards</span>
-        <p>The School is a 28,000-square-foot former convent in Greenpoint, Brooklyn — a nonprofit residency, workspace, and events institution at the intersection of art and frontier technology. One of its founders calls it &ldquo;an old school for new ideas.&rdquo; Artists, technologists, and researchers work side by side here on projects that wouldn't have a natural home anywhere else.</p>
-        <p>We're selecting our first 100 founding stewards: collaborators who shape the community through some mix of dues and labor — workshops you'd lead, projects you'd run, taste you'd bring, time you'd give.</p>
-        <p>Stewardship can be <em>money</em>, <em>skills</em>, or any blend in between. It is not consumption.</p>
+        <p>The School is a 20,000-square-foot building in Greenpoint, Brooklyn. A nonprofit residency, workspace, and events institution at the intersection of art and frontier technology. One of its founders calls it &ldquo;an old school for new ideas.&rdquo; Artists, technologists, and researchers work side by side here on projects that wouldn't have a natural home anywhere else.</p>
+        <p>We're selecting our first 100 founding stewards: collaborators who shape the community through some mix of dues and labor. Workshops you'd lead, projects you'd run, taste you'd bring, time you'd give.</p>
+        <p>Stewardship can be <em>money</em>, <em>skills</em>, or any blend in between. To paraphrase Marshall McLuhan: <em>there are no passengers on this spaceship. Only crew.</em></p>
       </section>
 
       <!-- ======================== SECTION: WHO YOU ARE ======================== -->
       <div class="section-band">
         <h2>Who you are</h2>
-        <span class="count">01 — 03</span>
+        <span class="count">01 / 03</span>
       </div>
 
       <div class="card span-2">
@@ -706,7 +706,7 @@
       <div class="card span-4">
         <div class="q">
           <span class="q-label">03 / One line on what you do</span>
-          <p class="q-help">Job, practice, project — whatever you'd say at the door.</p>
+          <p class="q-help">Job, practice, project. Whatever you'd say at the door.</p>
           <input type="text" name="what_you_do" placeholder="Painter / Founder of X / Researcher at Y / …">
         </div>
       </div>
@@ -714,7 +714,7 @@
       <!-- ======================== SECTION: WHAT BRINGS YOU HERE ======================== -->
       <div class="section-band">
         <h2>What brings you here</h2>
-        <span class="count">04 — 05</span>
+        <span class="count">04 / 05</span>
       </div>
 
       <div class="card span-4">
@@ -743,7 +743,7 @@
       <!-- ======================== SECTION: RHYTHM ======================== -->
       <div class="section-band">
         <h2>Rhythm</h2>
-        <span class="count">06 — 08</span>
+        <span class="count">06 / 08</span>
       </div>
 
       <div class="card span-2">
@@ -777,61 +777,63 @@
           <div class="opts">
             <label class="opt"><input type="radio" name="space_type" value="Hot desk"><span>Hot desk</span></label>
             <label class="opt"><input type="radio" name="space_type" value="Dedicated desk"><span>Dedicated desk</span></label>
-            <label class="opt"><input type="radio" name="space_type" value="Office or studio"><span>Office or studio</span></label>
-            <label class="opt"><input type="radio" name="space_type" value="None of these"><span>None of these</span></label>
+            <label class="opt"><input type="radio" name="space_type" value="Small office or studio"><span>Small office or studio</span></label>
+            <label class="opt"><input type="radio" name="space_type" value="Large office or studio"><span>Large office or studio</span></label>
+            <label class="opt"><input type="radio" name="space_type" value="Other" id="space-type-other-radio"><span>Other</span></label>
           </div>
+          <input type="text" name="space_type_other" id="space-type-other-input" placeholder="Describe the setup that would work for you…" style="display:none; margin-top:12px;">
         </div>
       </div>
 
       <!-- ======================== SECTION: MONEY ======================== -->
       <div class="section-band">
         <h2>Stewardship mix</h2>
-        <span class="count">09 — 10</span>
+        <span class="count">09 / 10</span>
       </div>
 
       <div class="card span-4">
         <div class="q">
-          <span class="q-label">09 / What range would you pay in dues per month?</span>
-          <p class="q-help">Depending on amenities — the floor you'd pay for something basic, and the ceiling you'd stretch to for a setup that's worth it. If you'd be a steward through labor alone, drag both thumbs to $0.</p>
+          <span class="q-label">09 / How would you want to split your contribution?</span>
+          <p class="q-help">Stewardship is dues, labor, or any blend. Slide to where you'd want to land: all dues, all labor, or anywhere in between. Labor means workshops, programming, projects, expertise, time. You can absolutely become a steward through skills alone.</p>
+          <div class="slider-frame">
+            <div class="slider-ends">
+              <span>DUES</span>
+              <span>LABOR</span>
+            </div>
+            <input type="range" class="mix-slider" id="dues-labor-slider" name="contribution_mix" min="0" max="100" step="5" value="50">
+            <p class="slider-readout" id="dues-labor-readout"><span class="untouched">Slide to indicate. Default 50/50.</span></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card span-4" id="dues-amount-card">
+        <div class="q">
+          <span class="q-label">10 / What range would you pay in dues per month?</span>
+          <p class="q-help">Depending on amenities. The floor you'd pay for something basic, and the ceiling you'd stretch to for a setup that's worth it.</p>
           <div class="dual-slider">
             <div class="dual-track">
               <div class="dual-fill" id="dues-fill"></div>
             </div>
-            <input type="range" id="dues-min" name="price_min" min="0" max="2000" step="25" value="100">
-            <input type="range" id="dues-max" name="price_max" min="0" max="2000" step="25" value="500">
+            <input type="range" id="dues-min" name="price_min" min="0" max="1000" step="25" value="100">
+            <input type="range" id="dues-max" name="price_max" min="0" max="1000" step="25" value="500">
           </div>
           <div class="dual-scale">
-            <span>$0</span><span>$500</span><span>$1,000</span><span>$1,500</span><span>$2,000+</span>
+            <span>$0</span><span>$250</span><span>$500</span><span>$750</span><span>$1,000+</span>
           </div>
           <p class="dual-readout" id="dues-readout"><span class="untouched">Drag the thumbs to set a range</span></p>
-        </div>
-      </div>
-
-      <div class="card span-4">
-        <div class="q">
-          <span class="q-label">10 / How would you want to split your contribution?</span>
-          <p class="q-help">Stewardship is dues, labor, or any blend. Slide to where you'd want to land — all dues, all labor, or anywhere in between. Labor means workshops, programming, projects, expertise, time. You can absolutely become a steward through skills alone.</p>
-          <div class="slider-frame">
-            <div class="slider-ends">
-              <span><strong>100% dues</strong> / 0% labor</span>
-              <span>0% dues / <strong>100% labor</strong></span>
-            </div>
-            <input type="range" class="mix-slider" id="dues-labor-slider" name="contribution_mix" min="0" max="100" step="5" value="50">
-            <p class="slider-readout" id="dues-labor-readout"><span class="untouched">Slide to indicate · default 50% / 50%</span></p>
-          </div>
         </div>
       </div>
 
       <!-- ======================== SECTION: WHAT YOU'D BRING ======================== -->
       <div class="section-band">
         <h2>What you'd bring</h2>
-        <span class="count">11 — 12</span>
+        <span class="count">11 / 12</span>
       </div>
 
       <div class="card span-4">
         <div class="q">
           <span class="q-label">11 / What labor would you contribute?</span>
-          <p class="q-help">Specifically: workshops you could lead, programming you'd run, expertise you'd share, work you'd hang on the wall, time you'd give. The more specific, the better — this is how we read fit.</p>
+          <p class="q-help">Specifically: workshops you could lead, programming you'd run, expertise you'd share, work you'd hang on the wall, time you'd give. The more specific, the better. This is how we read fit.</p>
           <textarea name="contribute" rows="4" placeholder="A monthly workshop on … / I'd want to organize … / I can help with …"></textarea>
         </div>
       </div>
@@ -847,15 +849,15 @@
       <!-- ======================== SECTION: TWO MORE ======================== -->
       <div class="section-band">
         <h2>Two more</h2>
-        <span class="count">13 — 14</span>
+        <span class="count">13 / 14</span>
       </div>
 
       <div class="card span-2">
         <div class="q">
           <span class="q-label">13 / Informational session</span>
-          <p class="q-help">We're hosting one in May for founding stewards. RSVP without committing — we'll send details once we have them.</p>
+          <p class="q-help">We're hosting one in May for founding stewards. RSVP without committing. We'll send details once we have them.</p>
           <div class="opts">
-            <label class="opt"><input type="radio" name="info_session" value="Yes — RSVP me"><span>Yes — RSVP me</span></label>
+            <label class="opt"><input type="radio" name="info_session" value="Yes, RSVP me"><span>Yes, RSVP me</span></label>
             <label class="opt"><input type="radio" name="info_session" value="Maybe"><span>Maybe</span></label>
             <label class="opt"><input type="radio" name="info_session" value="Not this time"><span>Not this time</span></label>
           </div>
@@ -865,9 +867,9 @@
       <div class="card span-2">
         <div class="q">
           <span class="q-label">14 / Residency interest</span>
-          <p class="q-help">We have a separate, very selective residency program for entrepreneurs and artists that includes a place to stay inside the Convent. By application only.</p>
+          <p class="q-help">We have a separate, very selective residency program for entrepreneurs and artists that includes a place to stay on site. By application only.</p>
           <div class="opts">
-            <label class="opt"><input type="radio" name="residency_interest" value="Yes — tell me more"><span>Yes — tell me more</span></label>
+            <label class="opt"><input type="radio" name="residency_interest" value="Yes, tell me more"><span>Yes, tell me more</span></label>
             <label class="opt"><input type="radio" name="residency_interest" value="Not for me"><span>Not for me</span></label>
           </div>
         </div>
@@ -900,7 +902,7 @@
       <!-- SUCCESS STATE -->
       <section class="card success" id="success-card">
         <h2 class="success-headline">Response <em>received.</em></h2>
-        <p class="success-sub">Thank you — we read every one of these. We'll be in touch at the email you left once we've gone through the responses, and ahead of the May informational session if you said yes.</p>
+        <p class="success-sub">Thank you. We read every one of these. We'll be in touch at the email you left once we've gone through the responses, and ahead of the May informational session if you said yes.</p>
       </section>
     </form>
 
@@ -929,12 +931,23 @@
       }
       tick(); setInterval(tick, 1000);
 
+      // "Other" space type, reveal a freeform text input when picked.
+      const otherInput = document.getElementById('space-type-other-input');
+      document.querySelectorAll('input[name="space_type"]').forEach(r => {
+        r.addEventListener('change', () => {
+          const isOther = document.getElementById('space-type-other-radio').checked;
+          otherInput.style.display = isOther ? 'block' : 'none';
+          if (isOther) otherInput.focus();
+          else otherInput.value = '';
+        });
+      });
+
       // Dual-thumb dues range slider.
       const duesMin = document.getElementById('dues-min');
       const duesMax = document.getElementById('dues-max');
       const duesFill = document.getElementById('dues-fill');
       const duesReadout = document.getElementById('dues-readout');
-      const DUES_MAX_VALUE = 2000;
+      const DUES_MAX_VALUE = 1000;
       let duesTouched = false;
       function fmtDollars(n) {
         if (n >= 1000) return '$' + (n / 1000).toFixed(n % 1000 === 0 ? 0 : 1) + 'k';
@@ -953,9 +966,9 @@
         duesFill.style.left = (lo / DUES_MAX_VALUE * 100) + '%';
         duesFill.style.width = ((hi - lo) / DUES_MAX_VALUE * 100) + '%';
         let label;
-        if (lo === 0 && hi === 0) label = '<strong>Labor only</strong> — no dues';
+        if (lo === 0 && hi === 0) label = '<strong>Labor only</strong>, no dues';
         else if (lo === hi)       label = '<strong>' + fmtDollars(lo) + '/mo</strong> exactly';
-        else                      label = '<strong>' + fmtDollars(lo) + ' — ' + fmtDollars(hi) + '</strong> / month';
+        else                      label = '<strong>' + fmtDollars(lo) + ' to ' + fmtDollars(hi) + '</strong> / month';
         duesReadout.innerHTML = duesTouched
           ? label
           : '<span class="untouched">Drag the thumbs to set a range</span>';
@@ -965,9 +978,10 @@
       duesMax.addEventListener('input', onDuesInput);
       renderDues();
 
-      // Dues-vs-labor slider live readout.
+      // Dues-vs-labor slider live readout + conditional dues-amount card.
       const slider = document.getElementById('dues-labor-slider');
       const readout = document.getElementById('dues-labor-readout');
+      const duesCard = document.getElementById('dues-amount-card');
       let sliderTouched = false;
       function renderMix() {
         const labor = Math.round(Number(slider.value));
@@ -978,6 +992,8 @@
         else if (labor === dues)label = '<strong>50% dues · 50% labor</strong> (even split)';
         else                    label = dues + '% dues · ' + labor + '% labor';
         readout.innerHTML = label;
+        // Hide the dues-amount card when there are no dues to give (100% labor).
+        duesCard.style.display = (labor === 100) ? 'none' : '';
       }
       slider.addEventListener('input', () => { sliderTouched = true; renderMix(); });
       slider.addEventListener('change', () => { sliderTouched = true; renderMix(); });
@@ -996,7 +1012,7 @@
         // If the slider was never touched, send empty so we know they
         // didn't actually pick a mix (vs. picking 50/50 intentionally).
         if (!sliderTouched) out.contribution_mix = '';
-        // Same for the dues slider — empty means "did not engage."
+        // Same for the dues slider. Empty means "did not engage."
         if (!duesTouched) { out.price_min = ''; out.price_max = ''; }
         return out;
       }
@@ -1025,7 +1041,7 @@
           window.scrollTo({ top: 0, behavior: 'smooth' });
         } catch (err) {
           console.error('[school-survey] submit failed', err);
-          submitMsg.textContent = 'Something broke — ' + (err.message || 'try again in a moment.');
+          submitMsg.textContent = 'Something broke. ' + (err.message || 'try again in a moment.');
           submitMsg.style.color = '#cc3322';
           submitBtn.disabled = false;
           submitBtn.textContent = originalLabel;
