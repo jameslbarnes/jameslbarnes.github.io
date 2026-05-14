@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>The School · Founding Stewards Application</title>
-  <meta name="description" content="The Convent is selecting its first 100 founding stewards — collaborators who shape this community, financially and energetically. Not a spectator program.">
+  <title>The School · Stewardship Survey</title>
+  <meta name="description" content="The School is selecting its first 100 founding stewards — collaborators who shape this community through some mix of dues and labor. Stewardship is not consumption.">
 
   <script>
     window.SCHOOL_SURVEY_ENDPOINT = "https://www.sayinterviews.com/api/school-survey";
@@ -412,6 +412,67 @@
     }
     .price-prefix input { padding-left: 26px; }
 
+    /* Dues / labor slider */
+    .slider-frame { padding-top: 6px; }
+    .slider-ends {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .slider-ends strong { color: var(--ink); font-weight: 700; }
+    input[type="range"].mix-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 6px;
+      background: var(--line-strong);
+      border-radius: 999px;
+      outline: none;
+      cursor: pointer;
+    }
+    input[type="range"].mix-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--ink);
+      border: 3px solid var(--card);
+      box-shadow: 0 0 0 1px var(--ink), 0 2px 6px rgba(0,0,0,0.18);
+      cursor: grab;
+    }
+    input[type="range"].mix-slider::-moz-range-thumb {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--ink);
+      border: 3px solid var(--card);
+      box-shadow: 0 0 0 1px var(--ink);
+      cursor: grab;
+    }
+    input[type="range"].mix-slider:focus { outline: none; }
+    input[type="range"].mix-slider:focus::-webkit-slider-thumb {
+      box-shadow: 0 0 0 1px var(--ink), 0 0 0 5px rgba(0, 255, 102, 0.32);
+    }
+    .slider-readout {
+      margin-top: 16px;
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .slider-readout strong {
+      color: var(--ink);
+      font-weight: 700;
+    }
+    .slider-readout .untouched { color: var(--muted); font-weight: 500; }
+
     .submit-card {
       grid-column: span 4;
       display: flex;
@@ -536,7 +597,7 @@
         </div>
         <h1 class="hero-headline">
           THE SCHOOL
-          <small>Selecting our first 100 founding stewards. This is your application.</small>
+          <small>Stewardship survey · 100 founding stewards.</small>
         </h1>
         <div>
           <div class="hero-tags">
@@ -545,7 +606,7 @@
           <div class="hero-tags" style="margin-top: 4px;">
             <span>GREENPOINT, NYC</span>
           </div>
-          <div class="hero-status"><span class="dot"></span><span>APPLICATIONS OPEN</span></div>
+          <div class="hero-status"><span class="dot"></span><span>SURVEY OPEN</span></div>
         </div>
       </section>
 
@@ -562,32 +623,17 @@
           </svg>
         </div>
         <div class="tile-footer">
-          <strong>A nonprofit community</strong>
-          <span>art × frontier tech</span>
-        </div>
-      </aside>
-
-      <!-- INFO TILE: WHO -->
-      <aside class="card tile">
-        <div class="eyebrow"><span>WHO</span><span class="arrow">↗</span></div>
-        <div class="tile-icon" aria-hidden="true">
-          <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="32" cy="22" r="9"/>
-            <path d="M14 54 C14 42, 50 42, 50 54"/>
-          </svg>
-        </div>
-        <div class="tile-footer">
-          <strong>Founding stewards</strong>
-          <span>collaborators, not spectators</span>
+          <strong>An old school</strong>
+          <span>for new ideas</span>
         </div>
       </aside>
 
       <!-- INTRO -->
       <section class="card intro span-4">
         <span class="lead-num">100 <span>·</span> founding stewards</span>
-        <p>The Convent is a nonprofit community in a 28,000 sq ft historic building in Greenpoint, Brooklyn — a residency, workspace, and events institution at the intersection of frontier art and technology.</p>
-        <p>We're a small group of collaborators evaluating our first 100 founding stewards: people who shape the community both <em>financially</em> and <em>energetically</em>. Workshops, projects, taste, time — alongside membership dues.</p>
-        <p>This is not a spectator program. If you're looking to passively rent a desk, there are plenty of places that sell that. If you're looking to help shape what culture and technology can be in the same room, keep reading.</p>
+        <p>The School is a 28,000-square-foot former convent in Greenpoint, Brooklyn — a nonprofit residency, workspace, and events institution at the intersection of art and frontier technology. One of its founders calls it &ldquo;an old school for new ideas.&rdquo; Artists, technologists, and researchers work side by side here on projects that wouldn't have a natural home anywhere else.</p>
+        <p>We're selecting our first 100 founding stewards: collaborators who shape the community through some mix of dues and labor — workshops you'd lead, projects you'd run, taste you'd bring, time you'd give.</p>
+        <p>Stewardship can be <em>money</em>, <em>skills</em>, or any blend in between. It is not consumption.</p>
       </section>
 
       <!-- ======================== SECTION: WHO YOU ARE ======================== -->
@@ -692,14 +738,14 @@
 
       <!-- ======================== SECTION: MONEY ======================== -->
       <div class="section-band">
-        <h2>Money</h2>
-        <span class="count">09</span>
+        <h2>Stewardship mix</h2>
+        <span class="count">09 — 10</span>
       </div>
 
       <div class="card span-4">
         <div class="q">
-          <span class="q-label">09 / What range would you pay per month?</span>
-          <p class="q-help">Depending on amenities — minimum you'd pay for something basic, maximum you'd stretch to for a setup that's worth it.</p>
+          <span class="q-label">09 / What range would you pay in dues per month?</span>
+          <p class="q-help">Depending on amenities — minimum you'd pay for something basic, maximum you'd stretch to for a setup that's worth it. Leave blank if you'd be a steward through labor alone.</p>
           <div class="range-row">
             <label class="price-prefix">
               <input type="text" name="price_min" inputmode="numeric" placeholder="200">
@@ -712,24 +758,39 @@
         </div>
       </div>
 
+      <div class="card span-4">
+        <div class="q">
+          <span class="q-label">10 / How would you want to split your contribution?</span>
+          <p class="q-help">Stewardship is dues, labor, or any blend. Slide to where you'd want to land — all dues, all labor, or anywhere in between. Labor means workshops, programming, projects, expertise, time. You can absolutely become a steward through skills alone.</p>
+          <div class="slider-frame">
+            <div class="slider-ends">
+              <span><strong>100% dues</strong> / 0% labor</span>
+              <span>0% dues / <strong>100% labor</strong></span>
+            </div>
+            <input type="range" class="mix-slider" id="dues-labor-slider" name="contribution_mix" min="0" max="100" step="5" value="50">
+            <p class="slider-readout" id="dues-labor-readout"><span class="untouched">Slide to indicate · default 50% / 50%</span></p>
+          </div>
+        </div>
+      </div>
+
       <!-- ======================== SECTION: WHAT YOU'D BRING ======================== -->
       <div class="section-band">
         <h2>What you'd bring</h2>
-        <span class="count">10 — 11</span>
+        <span class="count">11 — 12</span>
       </div>
 
       <div class="card span-4">
         <div class="q">
-          <span class="q-label">10 / What would you contribute beyond dues?</span>
-          <p class="q-help">Workshops you could lead, projects you'd run, expertise you'd share, work you'd hang on the wall. Founding stewards who can lead programming are weighted accordingly.</p>
+          <span class="q-label">11 / What labor would you contribute?</span>
+          <p class="q-help">Specifically: workshops you could lead, programming you'd run, expertise you'd share, work you'd hang on the wall, time you'd give. The more specific, the better — this is how we read fit.</p>
           <textarea name="contribute" rows="4" placeholder="A monthly workshop on … / I'd want to organize … / I can help with …"></textarea>
         </div>
       </div>
 
       <div class="card span-4">
         <div class="q">
-          <span class="q-label">11 / Must-haves and nice-to-haves</span>
-          <p class="q-help">Tie this to your price range above. What's the floor (what would make it worth the minimum), what's the ceiling (what would justify the maximum)?</p>
+          <span class="q-label">12 / Must-haves and nice-to-haves</span>
+          <p class="q-help">Tie this to your dues range. What's the floor (what would make it worth the minimum), what's the ceiling (what would justify the maximum)?</p>
           <textarea name="must_haves" rows="4" placeholder="At $X/mo I need …  ·  At $Y/mo I'd want …"></textarea>
         </div>
       </div>
@@ -737,12 +798,12 @@
       <!-- ======================== SECTION: TWO MORE ======================== -->
       <div class="section-band">
         <h2>Two more</h2>
-        <span class="count">12 — 13</span>
+        <span class="count">13 — 14</span>
       </div>
 
       <div class="card span-2">
         <div class="q">
-          <span class="q-label">12 / Informational session</span>
+          <span class="q-label">13 / Informational session</span>
           <p class="q-help">We're hosting one in May for founding stewards. RSVP without committing — we'll send details once we have them.</p>
           <div class="opts">
             <label class="opt"><input type="radio" name="info_session" value="Yes — RSVP me"><span>Yes — RSVP me</span></label>
@@ -754,7 +815,7 @@
 
       <div class="card span-2">
         <div class="q">
-          <span class="q-label">13 / Residency interest</span>
+          <span class="q-label">14 / Residency interest</span>
           <p class="q-help">We have a separate, very selective residency program for entrepreneurs and artists that includes a place to stay inside the Convent. By application only.</p>
           <div class="opts">
             <label class="opt"><input type="radio" name="residency_interest" value="Yes — tell me more"><span>Yes — tell me more</span></label>
@@ -766,12 +827,12 @@
       <!-- ======================== SECTION: OPEN ======================== -->
       <div class="section-band">
         <h2>Anything else</h2>
-        <span class="count">14</span>
+        <span class="count">15</span>
       </div>
 
       <div class="card span-4">
         <div class="q">
-          <span class="q-label">14 / Anything else you want us to know?</span>
+          <span class="q-label">15 / Anything else you want us to know?</span>
           <textarea name="anything_else" rows="4"></textarea>
         </div>
       </div>
@@ -783,13 +844,13 @@
 
       <!-- SUBMIT -->
       <section class="card submit-card">
-        <p class="submit-msg" id="submit-msg">100 stewards. Not a spectator program.</p>
-        <button type="submit" id="submit-btn">Submit application →</button>
+        <p class="submit-msg" id="submit-msg">Stewardship is not consumption.</p>
+        <button type="submit" id="submit-btn">Submit response →</button>
       </section>
 
       <!-- SUCCESS STATE -->
       <section class="card success" id="success-card">
-        <h2 class="success-headline">Application <em>received.</em></h2>
+        <h2 class="success-headline">Response <em>received.</em></h2>
         <p class="success-sub">Thank you — we read every one of these. We'll be in touch at the email you left once we've gone through the responses, and ahead of the May informational session if you said yes.</p>
       </section>
     </form>
@@ -819,6 +880,23 @@
       }
       tick(); setInterval(tick, 1000);
 
+      // Dues-vs-labor slider live readout.
+      const slider = document.getElementById('dues-labor-slider');
+      const readout = document.getElementById('dues-labor-readout');
+      let sliderTouched = false;
+      function renderMix() {
+        const labor = Math.round(Number(slider.value));
+        const dues = 100 - labor;
+        let label;
+        if (labor === 0)        label = '<strong>100% dues</strong> · 0% labor (membership through money)';
+        else if (labor === 100) label = '0% dues · <strong>100% labor</strong> (stewardship through skills alone)';
+        else if (labor === dues)label = '<strong>50% dues · 50% labor</strong> (even split)';
+        else                    label = dues + '% dues · ' + labor + '% labor';
+        readout.innerHTML = label;
+      }
+      slider.addEventListener('input', () => { sliderTouched = true; renderMix(); });
+      slider.addEventListener('change', () => { sliderTouched = true; renderMix(); });
+
       function collect() {
         const fd = new FormData(form);
         const out = {};
@@ -830,6 +908,9 @@
           if (out[k] === undefined) out[k] = [];
           else if (!Array.isArray(out[k])) out[k] = [out[k]];
         });
+        // If the slider was never touched, send empty so we know they
+        // didn't actually pick a mix (vs. picking 50/50 intentionally).
+        if (!sliderTouched) out.contribution_mix = '';
         return out;
       }
 
