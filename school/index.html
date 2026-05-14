@@ -384,33 +384,80 @@
       box-shadow: 0 0 0 3px rgba(0, 255, 102, 0.4);
     }
 
-    /* Money range row */
-    .range-row {
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
-      align-items: center;
-      gap: 10px;
-    }
-    .range-row .dash {
-      color: var(--muted);
-      font-weight: 600;
-      font-family: var(--mono);
-    }
-    .price-prefix {
+    /* Dual-thumb price range slider */
+    .dual-slider {
       position: relative;
+      height: 28px;
+      margin: 22px 6px 8px;
     }
-    .price-prefix::before {
-      content: "$";
+    .dual-track {
       position: absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--muted);
-      font-family: var(--sans);
-      font-size: 16px;
-      pointer-events: none;
+      left: 0; right: 0; top: 11px;
+      height: 6px;
+      background: var(--line-strong);
+      border-radius: 999px;
     }
-    .price-prefix input { padding-left: 26px; }
+    .dual-fill {
+      position: absolute;
+      top: 0; bottom: 0;
+      background: var(--ink);
+      border-radius: 999px;
+    }
+    .dual-slider input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 28px;
+      background: transparent;
+      pointer-events: none; /* track is inert; thumb is interactive (see below) */
+      outline: none;
+      margin: 0;
+    }
+    .dual-slider input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      pointer-events: auto;
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: var(--ink);
+      border: 3px solid var(--card);
+      box-shadow: 0 0 0 1px var(--ink), 0 3px 8px rgba(0,0,0,0.22);
+      cursor: grab;
+      margin-top: 0;
+    }
+    .dual-slider input[type="range"]::-moz-range-thumb {
+      pointer-events: auto;
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: var(--ink);
+      border: 3px solid var(--card);
+      box-shadow: 0 0 0 1px var(--ink), 0 3px 8px rgba(0,0,0,0.22);
+      cursor: grab;
+    }
+    .dual-slider input[type="range"]:focus::-webkit-slider-thumb {
+      box-shadow: 0 0 0 1px var(--ink), 0 0 0 5px rgba(0, 255, 102, 0.32);
+    }
+    .dual-scale {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 0 4px;
+    }
+    .dual-readout {
+      margin: 14px 0 0;
+      font-family: var(--mono);
+      font-size: 13px;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+      font-weight: 600;
+    }
+    .dual-readout strong { color: var(--green-deep); }
+    .dual-readout .untouched { color: var(--muted); font-weight: 500; }
 
     /* Dues / labor slider */
     .slider-frame { padding-top: 6px; }
@@ -688,7 +735,6 @@
       <div class="card span-4">
         <div class="q">
           <span class="q-label">05 / What inspires you about becoming a steward of The School?</span>
-          <p class="q-help">A few sentences — the version that actually pulls you in. This is the answer that helps us read whether the fit is real.</p>
           <textarea name="inspires" rows="4"></textarea>
         </div>
       </div>
@@ -745,16 +791,18 @@
       <div class="card span-4">
         <div class="q">
           <span class="q-label">09 / What range would you pay in dues per month?</span>
-          <p class="q-help">Depending on amenities — minimum you'd pay for something basic, maximum you'd stretch to for a setup that's worth it. Leave blank if you'd be a steward through labor alone.</p>
-          <div class="range-row">
-            <label class="price-prefix">
-              <input type="text" name="price_min" inputmode="numeric" placeholder="200">
-            </label>
-            <span class="dash">—</span>
-            <label class="price-prefix">
-              <input type="text" name="price_max" inputmode="numeric" placeholder="800">
-            </label>
+          <p class="q-help">Depending on amenities — the floor you'd pay for something basic, and the ceiling you'd stretch to for a setup that's worth it. If you'd be a steward through labor alone, drag both thumbs to $0.</p>
+          <div class="dual-slider">
+            <div class="dual-track">
+              <div class="dual-fill" id="dues-fill"></div>
+            </div>
+            <input type="range" id="dues-min" name="price_min" min="0" max="2000" step="25" value="100">
+            <input type="range" id="dues-max" name="price_max" min="0" max="2000" step="25" value="500">
           </div>
+          <div class="dual-scale">
+            <span>$0</span><span>$500</span><span>$1,000</span><span>$1,500</span><span>$2,000+</span>
+          </div>
+          <p class="dual-readout" id="dues-readout"><span class="untouched">Drag the thumbs to set a range</span></p>
         </div>
       </div>
 
@@ -880,6 +928,42 @@
       }
       tick(); setInterval(tick, 1000);
 
+      // Dual-thumb dues range slider.
+      const duesMin = document.getElementById('dues-min');
+      const duesMax = document.getElementById('dues-max');
+      const duesFill = document.getElementById('dues-fill');
+      const duesReadout = document.getElementById('dues-readout');
+      const DUES_MAX_VALUE = 2000;
+      let duesTouched = false;
+      function fmtDollars(n) {
+        if (n >= 1000) return '$' + (n / 1000).toFixed(n % 1000 === 0 ? 0 : 1) + 'k';
+        return '$' + n;
+      }
+      function renderDues() {
+        let lo = parseInt(duesMin.value, 10);
+        let hi = parseInt(duesMax.value, 10);
+        if (lo > hi) {
+          // Swap when the user drags one thumb past the other.
+          if (document.activeElement === duesMin) duesMin.value = hi;
+          else duesMax.value = lo;
+          lo = parseInt(duesMin.value, 10);
+          hi = parseInt(duesMax.value, 10);
+        }
+        duesFill.style.left = (lo / DUES_MAX_VALUE * 100) + '%';
+        duesFill.style.width = ((hi - lo) / DUES_MAX_VALUE * 100) + '%';
+        let label;
+        if (lo === 0 && hi === 0) label = '<strong>Labor only</strong> — no dues';
+        else if (lo === hi)       label = '<strong>' + fmtDollars(lo) + '/mo</strong> exactly';
+        else                      label = '<strong>' + fmtDollars(lo) + ' — ' + fmtDollars(hi) + '</strong> / month';
+        duesReadout.innerHTML = duesTouched
+          ? label
+          : '<span class="untouched">Drag the thumbs to set a range</span>';
+      }
+      function onDuesInput() { duesTouched = true; renderDues(); }
+      duesMin.addEventListener('input', onDuesInput);
+      duesMax.addEventListener('input', onDuesInput);
+      renderDues();
+
       // Dues-vs-labor slider live readout.
       const slider = document.getElementById('dues-labor-slider');
       const readout = document.getElementById('dues-labor-readout');
@@ -911,6 +995,8 @@
         // If the slider was never touched, send empty so we know they
         // didn't actually pick a mix (vs. picking 50/50 intentionally).
         if (!sliderTouched) out.contribution_mix = '';
+        // Same for the dues slider — empty means "did not engage."
+        if (!duesTouched) { out.price_min = ''; out.price_max = ''; }
         return out;
       }
 
