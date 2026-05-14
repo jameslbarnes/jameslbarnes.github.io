@@ -1,0 +1,792 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The School · Membership Survey</title>
+  <meta name="description" content="Help shape membership at The School — a residency, workspace, and events building in Greenpoint, Brooklyn for art, technology, and culture.">
+
+  <!--
+    ============================================================
+    GOOGLE FORMS SETUP
+    ============================================================
+    To wire this up to a Google Form:
+
+    1. Create a Google Form with these questions, in this exact order
+       and exact type. Titles can change; types matter for entry IDs:
+
+       1.  Name                                          (short answer)
+       2.  Email                                         (short answer)
+       3.  What do you do?                               (short answer)
+       4.  What would you use The School for?            (checkboxes)
+       5.  In your own words, what would you use it for? (paragraph)
+       6.  How often would you come?                     (multiple choice)
+       7.  When would you come?                          (checkboxes)
+       8.  What would you pay per month?                 (short answer)
+       9.  What would feel like too much?                (short answer)
+       10. What would make this a yes for you?           (paragraph)
+       11. Anything else you want us to know?            (paragraph)
+
+    2. In the form editor → three-dot menu → "Get pre-filled link".
+       Fill dummy values in every field. Click "Get link".
+
+    3. The resulting URL has entry.NUMERIC_ID for each field. Copy each
+       ID into the FORM_ID and ENTRY_* constants below.
+
+    4. FORM_ID is the long string between /d/e/ and /viewform in the
+       form's share URL.
+    ============================================================
+  -->
+  <script>
+    // Replace these placeholders. The form will be inert until they are set.
+    window.SCHOOL_FORM_CONFIG = {
+      FORM_ID:           "REPLACE_FORM_ID",
+      ENTRY_NAME:        "entry.000000001",
+      ENTRY_EMAIL:       "entry.000000002",
+      ENTRY_WHAT_YOU_DO: "entry.000000003",
+      ENTRY_USES:        "entry.000000004",
+      ENTRY_USES_OPEN:   "entry.000000005",
+      ENTRY_FREQUENCY:   "entry.000000006",
+      ENTRY_WHEN:        "entry.000000007",
+      ENTRY_PRICE_YES:   "entry.000000008",
+      ENTRY_PRICE_NO:    "entry.000000009",
+      ENTRY_WHAT_MAKES_YES: "entry.000000010",
+      ENTRY_ANYTHING_ELSE: "entry.000000011",
+    };
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #000000;
+      --card: #f4f3ef;
+      --card-2: #ebeae5;
+      --ink: #0d0d0d;
+      --ink-soft: #4a4a47;
+      --muted: #7a7873;
+      --line: rgba(13, 13, 13, 0.08);
+      --line-strong: rgba(13, 13, 13, 0.18);
+      --green: #00ff66;
+      --green-deep: #00cc52;
+      --radius: 22px;
+      --radius-sm: 14px;
+      --max: 1280px;
+      --sans: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --shadow:
+        0 1px 0 rgba(255, 255, 255, 0.04) inset,
+        0 12px 32px rgba(0, 0, 0, 0.45),
+        0 2px 6px rgba(0, 0, 0, 0.35);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: #fff;
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      padding: 20px;
+    }
+
+    .wrap { max-width: var(--max); margin: 0 auto; }
+
+    /* === GRID === */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .card {
+      background: var(--card);
+      color: var(--ink);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card.dark {
+      background: #0e0e0e;
+      color: #f4f3ef;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    /* === SPANS === */
+    .span-4 { grid-column: span 4; }
+    .span-3 { grid-column: span 3; }
+    .span-2 { grid-column: span 2; }
+    .span-1 { grid-column: span 1; }
+
+    /* === EYEBROW === */
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    .eyebrow .arrow {
+      display: inline-grid;
+      place-items: center;
+      width: 18px;
+      height: 18px;
+      color: var(--ink);
+      opacity: 0.7;
+    }
+
+    /* === HERO === */
+    .hero {
+      min-height: 460px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      padding: 36px 36px 32px;
+    }
+
+    .hero-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .mark {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border: 1.5px solid var(--ink);
+      border-radius: 8px;
+      font-family: var(--mono);
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0;
+    }
+
+    .hero-meta {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      text-align: right;
+      line-height: 1.5;
+    }
+    .hero-meta strong {
+      display: block;
+      color: var(--ink);
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .hero-headline {
+      align-self: end;
+      margin: 0;
+      font-family: var(--sans);
+      font-weight: 800;
+      font-size: clamp(48px, 7.5vw, 96px);
+      line-height: 0.95;
+      letter-spacing: -0.035em;
+      color: var(--ink);
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      margin-top: 14px;
+    }
+
+    .hero-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 18px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--green-deep);
+      font-weight: 600;
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 4px rgba(0, 255, 102, 0.18);
+    }
+
+    /* === SIDE TILES === */
+    .tile {
+      min-height: 220px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 12px;
+    }
+
+    .tile-icon {
+      display: grid;
+      place-items: center;
+      padding: 18px 0;
+      color: var(--ink);
+      opacity: 0.85;
+    }
+    .tile-icon svg { width: 88px; height: 88px; }
+
+    .tile-footer {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+    .tile-footer strong {
+      color: var(--ink);
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    /* === SECTION HEADER === */
+    .section-band {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 8px 4px 0;
+    }
+    .section-band h2 {
+      margin: 0;
+      font-family: var(--sans);
+      font-weight: 700;
+      font-size: 22px;
+      letter-spacing: -0.01em;
+      color: #fff;
+    }
+    .section-band .count {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    /* === FORM === */
+    .q {
+      display: grid;
+      gap: 14px;
+    }
+
+    .q-label {
+      display: block;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .q-title {
+      font-family: var(--sans);
+      font-weight: 700;
+      font-size: 22px;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+      color: var(--ink);
+      margin: 0;
+    }
+    .q-help {
+      font-family: var(--sans);
+      color: var(--ink-soft);
+      font-size: 14px;
+      margin: 0;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    textarea {
+      width: 100%;
+      font: inherit;
+      font-family: var(--sans);
+      font-size: 16px;
+      color: var(--ink);
+      background: #fff;
+      border: 1px solid var(--line-strong);
+      border-radius: 10px;
+      padding: 12px 14px;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    textarea {
+      resize: vertical;
+      min-height: 88px;
+      font-family: var(--sans);
+    }
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--ink);
+      box-shadow: 0 0 0 3px rgba(0, 255, 102, 0.22);
+    }
+
+    .opts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .opt {
+      cursor: pointer;
+    }
+    .opt input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .opt span {
+      display: inline-block;
+      padding: 9px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--line-strong);
+      background: #fff;
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--ink);
+      transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+      user-select: none;
+    }
+    .opt:hover span { border-color: var(--ink); }
+    .opt input:checked + span {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: #f4f3ef;
+    }
+    .opt input:focus-visible + span {
+      box-shadow: 0 0 0 3px rgba(0, 255, 102, 0.4);
+    }
+
+    .submit-card {
+      grid-column: span 4;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 30px 36px;
+      flex-wrap: wrap;
+    }
+    .submit-msg {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      margin: 0;
+    }
+    button[type="submit"] {
+      font: inherit;
+      font-family: var(--sans);
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 16px 28px;
+      background: var(--ink);
+      color: var(--card);
+      border: 1.5px solid var(--ink);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    button[type="submit"]:hover {
+      transform: translateY(-1px);
+      background: var(--green);
+      color: var(--ink);
+      border-color: var(--green);
+      box-shadow: 0 8px 24px rgba(0, 255, 102, 0.25);
+    }
+    button[type="submit"]:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* === STATUS BANNER === */
+    .status-banner {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 20px;
+      background: rgba(255, 200, 0, 0.1);
+      border: 1px solid rgba(255, 200, 0, 0.4);
+      border-radius: 12px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #ffd560;
+    }
+    .status-banner.hidden { display: none; }
+
+    /* === SUCCESS STATE === */
+    .success {
+      display: none;
+      grid-column: 1 / -1;
+      padding: 64px 36px;
+      text-align: center;
+    }
+    .success.show { display: block; }
+    .success-headline {
+      font-family: var(--sans);
+      font-weight: 800;
+      font-size: clamp(36px, 5vw, 56px);
+      line-height: 1;
+      letter-spacing: -0.025em;
+      color: var(--ink);
+      margin: 0 0 14px;
+    }
+    .success-headline em { font-style: italic; color: var(--green-deep); font-weight: 700; }
+    .success-sub {
+      font-family: var(--sans);
+      font-size: 18px;
+      color: var(--ink-soft);
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* === FOOTER === */
+    .foot {
+      margin-top: 24px;
+      padding: 18px 12px 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.5);
+    }
+    .foot a { color: rgba(255, 255, 255, 0.7); text-decoration: none; }
+    .foot a:hover { color: var(--green); }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 980px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+      .span-4, .span-3, .span-2 { grid-column: span 2; }
+      .submit-card { grid-column: span 2; }
+      .success { grid-column: span 2; }
+      .status-banner { grid-column: span 2; }
+      .section-band { grid-column: span 2; }
+    }
+    @media (max-width: 580px) {
+      .grid { grid-template-columns: 1fr; gap: 12px; }
+      .span-4, .span-3, .span-2, .span-1 { grid-column: span 1; }
+      .submit-card, .success, .status-banner, .section-band { grid-column: span 1; }
+      .card { padding: 22px; }
+      .hero { padding: 28px 24px; }
+      .submit-card { flex-direction: column; align-items: stretch; }
+      .submit-card button { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <form id="school-form" class="grid" target="school-form-sink" method="POST" action="https://docs.google.com/forms/d/e/REPLACE_FORM_ID/formResponse" autocomplete="off">
+
+      <!-- HERO -->
+      <section class="card hero span-3">
+        <div class="hero-top">
+          <div class="mark">M</div>
+          <div class="hero-meta">
+            <strong id="hero-date">—</strong>
+            <span id="hero-time">—</span>
+          </div>
+        </div>
+        <h1 class="hero-headline">THE SCHOOL<br>MEMBERSHIP SURVEY</h1>
+        <div>
+          <div class="hero-tags">
+            <span>ART</span><span>TECHNOLOGY</span><span>RESEARCH</span><span>CULTURE</span>
+          </div>
+          <div class="hero-tags" style="margin-top: 4px;">
+            <span>GREENPOINT, NYC</span>
+          </div>
+          <div class="hero-status"><span class="dot"></span><span>NOW ACCEPTING SIGNAL</span></div>
+        </div>
+      </section>
+
+      <!-- INFO TILE: WHAT THIS IS -->
+      <aside class="card tile">
+        <div class="eyebrow">
+          <span>WHAT</span><span class="arrow">↗</span>
+        </div>
+        <div class="tile-icon" aria-hidden="true">
+          <!-- folded-paper icon -->
+          <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 10 H42 L50 18 V54 H14 Z"/>
+            <path d="M42 10 V18 H50"/>
+            <line x1="22" y1="28" x2="42" y2="28"/>
+            <line x1="22" y1="36" x2="42" y2="36"/>
+            <line x1="22" y1="44" x2="34" y2="44"/>
+          </svg>
+        </div>
+        <div class="tile-footer">
+          <strong>A residency &amp; workspace</strong>
+          <span>for art &amp; frontier tech</span>
+        </div>
+      </aside>
+
+      <!-- INFO TILE: WHO -->
+      <aside class="card tile">
+        <div class="eyebrow">
+          <span>WHO</span><span class="arrow">↗</span>
+        </div>
+        <div class="tile-icon" aria-hidden="true">
+          <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="32" cy="22" r="9"/>
+            <path d="M14 54 C14 42, 50 42, 50 54"/>
+          </svg>
+        </div>
+        <div class="tile-footer">
+          <strong>Artists, builders,</strong>
+          <span>researchers, friends</span>
+        </div>
+      </aside>
+
+      <!-- STATUS BANNER (only visible when form isn't configured) -->
+      <div class="status-banner" id="status-banner">
+        <span>●</span>
+        <span>FORM NOT YET CONNECTED — Submissions won't send until the Google Form is wired up (see HTML comments).</span>
+      </div>
+
+      <!-- ======================== SECTION: WHO YOU ARE ======================== -->
+      <div class="section-band">
+        <h2>Who you are</h2>
+        <span class="count">01 — 03</span>
+      </div>
+
+      <div class="card span-2">
+        <div class="q">
+          <span class="q-label">01 / Name</span>
+          <input type="text" name="entry.ENTRY_NAME" data-key="ENTRY_NAME" required>
+        </div>
+      </div>
+
+      <div class="card span-2">
+        <div class="q">
+          <span class="q-label">02 / Email</span>
+          <input type="email" name="entry.ENTRY_EMAIL" data-key="ENTRY_EMAIL" required>
+        </div>
+      </div>
+
+      <div class="card span-4">
+        <div class="q">
+          <span class="q-label">03 / One line on what you do</span>
+          <p class="q-help">Job, practice, project — whatever you'd say at the door.</p>
+          <input type="text" name="entry.ENTRY_WHAT_YOU_DO" data-key="ENTRY_WHAT_YOU_DO" placeholder="Painter / Founder of X / Researcher at Y / …">
+        </div>
+      </div>
+
+      <!-- ======================== SECTION: WHAT YOU'D USE IT FOR ======================== -->
+      <div class="section-band">
+        <h2>What you'd use it for</h2>
+        <span class="count">04 — 05</span>
+      </div>
+
+      <div class="card span-4">
+        <div class="q">
+          <span class="q-label">04 / Pick all that apply</span>
+          <div class="opts">
+            <label class="opt"><input type="checkbox" name="entry.ENTRY_USES" data-key="ENTRY_USES" value="Workspace"><span>Workspace</span></label>
+            <label class="opt"><input type="checkbox" name="entry.ENTRY_USES" data-key="ENTRY_USES" value="Events"><span>Events</span></label>
+            <label class="opt"><input type="checkbox" name="entry.ENTRY_USES" data-key="ENTRY_USES" value="Residency"><span>Residency</span></label>
+            <label class="opt"><input type="checkbox" name="entry.ENTRY_USES" data-key="ENTRY_USES" value="Studio time"><span>Studio time</span></label>
+            <label class="opt"><input type="checkbox" name="entry.ENTRY_USES" data-key="ENTRY_USES" value="Sound beds"><span>Sound beds</span></label>
+            <label class="opt"><input type="checkbox" name="entry.ENTRY_USES" data-key="ENTRY_USES" value="Community"><span>Community</span></label>
+            <label class="opt"><input type="checkbox" name="entry.ENTRY_USES" data-key="ENTRY_USES" value="Classes"><span>Classes</span></label>
+            <label class="opt"><input type="checkbox" name="entry.ENTRY_USES" data-key="ENTRY_USES" value="Just curious"><span>Just curious</span></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="card span-4">
+        <div class="q">
+          <span class="q-label">05 / In your own words</span>
+          <p class="q-help">What would you actually use The School for? The above is a checklist — this is the real version.</p>
+          <textarea name="entry.ENTRY_USES_OPEN" data-key="ENTRY_USES_OPEN" rows="4"></textarea>
+        </div>
+      </div>
+
+      <!-- ======================== SECTION: RHYTHM ======================== -->
+      <div class="section-band">
+        <h2>Rhythm</h2>
+        <span class="count">06 — 07</span>
+      </div>
+
+      <div class="card span-2">
+        <div class="q">
+          <span class="q-label">06 / How often would you come?</span>
+          <div class="opts">
+            <label class="opt"><input type="radio" name="entry.ENTRY_FREQUENCY" data-key="ENTRY_FREQUENCY" value="Occasional"><span>Occasional</span></label>
+            <label class="opt"><input type="radio" name="entry.ENTRY_FREQUENCY" data-key="ENTRY_FREQUENCY" value="Weekly"><span>Weekly</span></label>
+            <label class="opt"><input type="radio" name="entry.ENTRY_FREQUENCY" data-key="ENTRY_FREQUENCY" value="3+ days a week"><span>3+ days/wk</span></label>
+            <label class="opt"><input type="radio" name="entry.ENTRY_FREQUENCY" data-key="ENTRY_FREQUENCY" value="Live there"><span>Live there</span></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="card span-2">
+        <div class="q">
+          <span class="q-label">07 / When?</span>
+          <div class="opts">
+            <label class="opt"><input type="checkbox" name="entry.ENTRY_WHEN" data-key="ENTRY_WHEN" value="Weekdays"><span>Weekdays</span></label>
+            <label class="opt"><input type="checkbox" name="entry.ENTRY_WHEN" data-key="ENTRY_WHEN" value="Evenings"><span>Evenings</span></label>
+            <label class="opt"><input type="checkbox" name="entry.ENTRY_WHEN" data-key="ENTRY_WHEN" value="Weekends"><span>Weekends</span></label>
+            <label class="opt"><input type="checkbox" name="entry.ENTRY_WHEN" data-key="ENTRY_WHEN" value="Overnight"><span>Overnight</span></label>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======================== SECTION: MONEY ======================== -->
+      <div class="section-band">
+        <h2>Money</h2>
+        <span class="count">08 — 09</span>
+      </div>
+
+      <div class="card span-2">
+        <div class="q">
+          <span class="q-label">08 / What would you pay per month?</span>
+          <p class="q-help">Be honest — a number or a range, in dollars.</p>
+          <input type="text" name="entry.ENTRY_PRICE_YES" data-key="ENTRY_PRICE_YES" placeholder="$ …">
+        </div>
+      </div>
+
+      <div class="card span-2">
+        <div class="q">
+          <span class="q-label">09 / What would feel like too much?</span>
+          <p class="q-help">The number that would make you bounce.</p>
+          <input type="text" name="entry.ENTRY_PRICE_NO" data-key="ENTRY_PRICE_NO" placeholder="$ …">
+        </div>
+      </div>
+
+      <!-- ======================== SECTION: OPEN ======================== -->
+      <div class="section-band">
+        <h2>Open</h2>
+        <span class="count">10 — 11</span>
+      </div>
+
+      <div class="card span-4">
+        <div class="q">
+          <span class="q-label">10 / What would make this a yes for you?</span>
+          <textarea name="entry.ENTRY_WHAT_MAKES_YES" data-key="ENTRY_WHAT_MAKES_YES" rows="4"></textarea>
+        </div>
+      </div>
+
+      <div class="card span-4">
+        <div class="q">
+          <span class="q-label">11 / Anything else you want us to know?</span>
+          <textarea name="entry.ENTRY_ANYTHING_ELSE" data-key="ENTRY_ANYTHING_ELSE" rows="4"></textarea>
+        </div>
+      </div>
+
+      <!-- SUBMIT -->
+      <section class="card submit-card">
+        <p class="submit-msg">Your answers help shape what The School becomes.</p>
+        <button type="submit" id="submit-btn">Send signal →</button>
+      </section>
+
+      <!-- SUCCESS STATE -->
+      <section class="card success" id="success-card">
+        <h2 class="success-headline">Signal <em>received.</em></h2>
+        <p class="success-sub">Thank you — we read every one of these. If we have questions, we'll be in touch at the email you left.</p>
+      </section>
+    </form>
+
+    <!-- Hidden iframe receives the Google Forms POST response so we can stay on this page. -->
+    <iframe name="school-form-sink" id="school-form-sink" style="display:none" tabindex="-1" aria-hidden="true"></iframe>
+
+    <footer class="foot">
+      <span>© The School · 2026</span>
+      <span><a href="mailto:james@sayinterviews.com">INFO@</a></span>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      const cfg = window.SCHOOL_FORM_CONFIG;
+      const form = document.getElementById('school-form');
+      const banner = document.getElementById('status-banner');
+      const submitBtn = document.getElementById('submit-btn');
+      const successCard = document.getElementById('success-card');
+      const sink = document.getElementById('school-form-sink');
+
+      // Live clock in hero
+      const dateEl = document.getElementById('hero-date');
+      const timeEl = document.getElementById('hero-time');
+      function pad(n) { return String(n).padStart(2, '0'); }
+      function tick() {
+        const d = new Date();
+        const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+        dateEl.textContent = pad(d.getDate()) + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
+        timeEl.textContent = pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds());
+      }
+      tick(); setInterval(tick, 1000);
+
+      // Wire form to Google Form, or show the "not configured" banner
+      const isConfigured = cfg.FORM_ID && cfg.FORM_ID !== 'REPLACE_FORM_ID';
+      if (isConfigured) {
+        banner.classList.add('hidden');
+        form.action = 'https://docs.google.com/forms/d/e/' + cfg.FORM_ID + '/formResponse';
+        // Swap each input's name from "entry.ENTRY_KEY" placeholder to the real entry.NUMERIC_ID.
+        form.querySelectorAll('[data-key]').forEach(el => {
+          const key = el.dataset.key;
+          if (cfg[key]) el.name = cfg[key];
+        });
+      } else {
+        submitBtn.disabled = false; // still allow click → just shows success state without recording
+        submitBtn.title = 'Form backend not yet configured.';
+      }
+
+      // After form submits, the hidden iframe loads — swap to success state.
+      let submitted = false;
+      sink.addEventListener('load', function () {
+        if (!submitted) return; // ignore initial load
+        form.querySelectorAll('.section-band, .card:not(.success), .status-banner').forEach(el => el.style.display = 'none');
+        successCard.classList.add('show');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+      form.addEventListener('submit', function () {
+        submitted = true;
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending…';
+      });
+    })();
+  </script>
+</body>
+</html>
