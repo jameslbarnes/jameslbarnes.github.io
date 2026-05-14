@@ -7,52 +7,12 @@
   <meta name="description" content="Help shape membership at The School — a residency, workspace, and events building in Greenpoint, Brooklyn for art, technology, and culture.">
 
   <!--
-    ============================================================
-    GOOGLE FORMS SETUP
-    ============================================================
-    To wire this up to a Google Form:
-
-    1. Create a Google Form with these questions, in this exact order
-       and exact type. Titles can change; types matter for entry IDs:
-
-       1.  Name                                          (short answer)
-       2.  Email                                         (short answer)
-       3.  What do you do?                               (short answer)
-       4.  What would you use The School for?            (checkboxes)
-       5.  In your own words, what would you use it for? (paragraph)
-       6.  How often would you come?                     (multiple choice)
-       7.  When would you come?                          (checkboxes)
-       8.  What would you pay per month?                 (short answer)
-       9.  What would feel like too much?                (short answer)
-       10. What would make this a yes for you?           (paragraph)
-       11. Anything else you want us to know?            (paragraph)
-
-    2. In the form editor → three-dot menu → "Get pre-filled link".
-       Fill dummy values in every field. Click "Get link".
-
-    3. The resulting URL has entry.NUMERIC_ID for each field. Copy each
-       ID into the FORM_ID and ENTRY_* constants below.
-
-    4. FORM_ID is the long string between /d/e/ and /viewform in the
-       form's share URL.
-    ============================================================
+    Form submits as JSON to https://www.sayinterviews.com/api/school-survey.
+    That endpoint writes to Firestore (school_survey_responses) and emails
+    the result via SendGrid. No Google Form / Formspree / third-party setup.
   -->
   <script>
-    // Replace these placeholders. The form will be inert until they are set.
-    window.SCHOOL_FORM_CONFIG = {
-      FORM_ID:           "REPLACE_FORM_ID",
-      ENTRY_NAME:        "entry.000000001",
-      ENTRY_EMAIL:       "entry.000000002",
-      ENTRY_WHAT_YOU_DO: "entry.000000003",
-      ENTRY_USES:        "entry.000000004",
-      ENTRY_USES_OPEN:   "entry.000000005",
-      ENTRY_FREQUENCY:   "entry.000000006",
-      ENTRY_WHEN:        "entry.000000007",
-      ENTRY_PRICE_YES:   "entry.000000008",
-      ENTRY_PRICE_NO:    "entry.000000009",
-      ENTRY_WHAT_MAKES_YES: "entry.000000010",
-      ENTRY_ANYTHING_ELSE: "entry.000000011",
-    };
+    window.SCHOOL_SURVEY_ENDPOINT = "https://www.sayinterviews.com/api/school-survey";
   </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -518,7 +478,7 @@
 </head>
 <body>
   <div class="wrap">
-    <form id="school-form" class="grid" target="school-form-sink" method="POST" action="https://docs.google.com/forms/d/e/REPLACE_FORM_ID/formResponse" autocomplete="off">
+    <form id="school-form" class="grid" autocomplete="off" novalidate>
 
       <!-- HERO -->
       <section class="card hero span-3">
@@ -579,12 +539,6 @@
         </div>
       </aside>
 
-      <!-- STATUS BANNER (only visible when form isn't configured) -->
-      <div class="status-banner" id="status-banner">
-        <span>●</span>
-        <span>FORM NOT YET CONNECTED — Submissions won't send until the Google Form is wired up (see HTML comments).</span>
-      </div>
-
       <!-- ======================== SECTION: WHO YOU ARE ======================== -->
       <div class="section-band">
         <h2>Who you are</h2>
@@ -594,14 +548,14 @@
       <div class="card span-2">
         <div class="q">
           <span class="q-label">01 / Name</span>
-          <input type="text" name="entry.ENTRY_NAME" data-key="ENTRY_NAME" required>
+          <input type="text" name="name" required>
         </div>
       </div>
 
       <div class="card span-2">
         <div class="q">
           <span class="q-label">02 / Email</span>
-          <input type="email" name="entry.ENTRY_EMAIL" data-key="ENTRY_EMAIL" required>
+          <input type="email" name="email" required>
         </div>
       </div>
 
@@ -609,7 +563,7 @@
         <div class="q">
           <span class="q-label">03 / One line on what you do</span>
           <p class="q-help">Job, practice, project — whatever you'd say at the door.</p>
-          <input type="text" name="entry.ENTRY_WHAT_YOU_DO" data-key="ENTRY_WHAT_YOU_DO" placeholder="Painter / Founder of X / Researcher at Y / …">
+          <input type="text" name="what_you_do" placeholder="Painter / Founder of X / Researcher at Y / …">
         </div>
       </div>
 
@@ -623,14 +577,14 @@
         <div class="q">
           <span class="q-label">04 / Pick all that apply</span>
           <div class="opts">
-            <label class="opt"><input type="checkbox" name="entry.ENTRY_USES" data-key="ENTRY_USES" value="Workspace"><span>Workspace</span></label>
-            <label class="opt"><input type="checkbox" name="entry.ENTRY_USES" data-key="ENTRY_USES" value="Events"><span>Events</span></label>
-            <label class="opt"><input type="checkbox" name="entry.ENTRY_USES" data-key="ENTRY_USES" value="Residency"><span>Residency</span></label>
-            <label class="opt"><input type="checkbox" name="entry.ENTRY_USES" data-key="ENTRY_USES" value="Studio time"><span>Studio time</span></label>
-            <label class="opt"><input type="checkbox" name="entry.ENTRY_USES" data-key="ENTRY_USES" value="Sound beds"><span>Sound beds</span></label>
-            <label class="opt"><input type="checkbox" name="entry.ENTRY_USES" data-key="ENTRY_USES" value="Community"><span>Community</span></label>
-            <label class="opt"><input type="checkbox" name="entry.ENTRY_USES" data-key="ENTRY_USES" value="Classes"><span>Classes</span></label>
-            <label class="opt"><input type="checkbox" name="entry.ENTRY_USES" data-key="ENTRY_USES" value="Just curious"><span>Just curious</span></label>
+            <label class="opt"><input type="checkbox" name="uses" value="Workspace"><span>Workspace</span></label>
+            <label class="opt"><input type="checkbox" name="uses" value="Events"><span>Events</span></label>
+            <label class="opt"><input type="checkbox" name="uses" value="Residency"><span>Residency</span></label>
+            <label class="opt"><input type="checkbox" name="uses" value="Studio time"><span>Studio time</span></label>
+            <label class="opt"><input type="checkbox" name="uses" value="Sound beds"><span>Sound beds</span></label>
+            <label class="opt"><input type="checkbox" name="uses" value="Community"><span>Community</span></label>
+            <label class="opt"><input type="checkbox" name="uses" value="Classes"><span>Classes</span></label>
+            <label class="opt"><input type="checkbox" name="uses" value="Just curious"><span>Just curious</span></label>
           </div>
         </div>
       </div>
@@ -639,7 +593,7 @@
         <div class="q">
           <span class="q-label">05 / In your own words</span>
           <p class="q-help">What would you actually use The School for? The above is a checklist — this is the real version.</p>
-          <textarea name="entry.ENTRY_USES_OPEN" data-key="ENTRY_USES_OPEN" rows="4"></textarea>
+          <textarea name="uses_open" rows="4"></textarea>
         </div>
       </div>
 
@@ -653,10 +607,10 @@
         <div class="q">
           <span class="q-label">06 / How often would you come?</span>
           <div class="opts">
-            <label class="opt"><input type="radio" name="entry.ENTRY_FREQUENCY" data-key="ENTRY_FREQUENCY" value="Occasional"><span>Occasional</span></label>
-            <label class="opt"><input type="radio" name="entry.ENTRY_FREQUENCY" data-key="ENTRY_FREQUENCY" value="Weekly"><span>Weekly</span></label>
-            <label class="opt"><input type="radio" name="entry.ENTRY_FREQUENCY" data-key="ENTRY_FREQUENCY" value="3+ days a week"><span>3+ days/wk</span></label>
-            <label class="opt"><input type="radio" name="entry.ENTRY_FREQUENCY" data-key="ENTRY_FREQUENCY" value="Live there"><span>Live there</span></label>
+            <label class="opt"><input type="radio" name="frequency" value="Occasional"><span>Occasional</span></label>
+            <label class="opt"><input type="radio" name="frequency" value="Weekly"><span>Weekly</span></label>
+            <label class="opt"><input type="radio" name="frequency" value="3+ days a week"><span>3+ days/wk</span></label>
+            <label class="opt"><input type="radio" name="frequency" value="Live there"><span>Live there</span></label>
           </div>
         </div>
       </div>
@@ -665,10 +619,10 @@
         <div class="q">
           <span class="q-label">07 / When?</span>
           <div class="opts">
-            <label class="opt"><input type="checkbox" name="entry.ENTRY_WHEN" data-key="ENTRY_WHEN" value="Weekdays"><span>Weekdays</span></label>
-            <label class="opt"><input type="checkbox" name="entry.ENTRY_WHEN" data-key="ENTRY_WHEN" value="Evenings"><span>Evenings</span></label>
-            <label class="opt"><input type="checkbox" name="entry.ENTRY_WHEN" data-key="ENTRY_WHEN" value="Weekends"><span>Weekends</span></label>
-            <label class="opt"><input type="checkbox" name="entry.ENTRY_WHEN" data-key="ENTRY_WHEN" value="Overnight"><span>Overnight</span></label>
+            <label class="opt"><input type="checkbox" name="when" value="Weekdays"><span>Weekdays</span></label>
+            <label class="opt"><input type="checkbox" name="when" value="Evenings"><span>Evenings</span></label>
+            <label class="opt"><input type="checkbox" name="when" value="Weekends"><span>Weekends</span></label>
+            <label class="opt"><input type="checkbox" name="when" value="Overnight"><span>Overnight</span></label>
           </div>
         </div>
       </div>
@@ -683,7 +637,7 @@
         <div class="q">
           <span class="q-label">08 / What would you pay per month?</span>
           <p class="q-help">Be honest — a number or a range, in dollars.</p>
-          <input type="text" name="entry.ENTRY_PRICE_YES" data-key="ENTRY_PRICE_YES" placeholder="$ …">
+          <input type="text" name="price_yes" placeholder="$ …">
         </div>
       </div>
 
@@ -691,7 +645,7 @@
         <div class="q">
           <span class="q-label">09 / What would feel like too much?</span>
           <p class="q-help">The number that would make you bounce.</p>
-          <input type="text" name="entry.ENTRY_PRICE_NO" data-key="ENTRY_PRICE_NO" placeholder="$ …">
+          <input type="text" name="price_no" placeholder="$ …">
         </div>
       </div>
 
@@ -704,20 +658,25 @@
       <div class="card span-4">
         <div class="q">
           <span class="q-label">10 / What would make this a yes for you?</span>
-          <textarea name="entry.ENTRY_WHAT_MAKES_YES" data-key="ENTRY_WHAT_MAKES_YES" rows="4"></textarea>
+          <textarea name="what_makes_yes" rows="4"></textarea>
         </div>
       </div>
 
       <div class="card span-4">
         <div class="q">
           <span class="q-label">11 / Anything else you want us to know?</span>
-          <textarea name="entry.ENTRY_ANYTHING_ELSE" data-key="ENTRY_ANYTHING_ELSE" rows="4"></textarea>
+          <textarea name="anything_else" rows="4"></textarea>
         </div>
+      </div>
+
+      <!-- Honeypot (hidden from humans, bots tend to fill it). -->
+      <div style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden" aria-hidden="true">
+        <label>Website<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
       </div>
 
       <!-- SUBMIT -->
       <section class="card submit-card">
-        <p class="submit-msg">Your answers help shape what The School becomes.</p>
+        <p class="submit-msg" id="submit-msg">Your answers help shape what The School becomes.</p>
         <button type="submit" id="submit-btn">Send signal →</button>
       </section>
 
@@ -728,9 +687,6 @@
       </section>
     </form>
 
-    <!-- Hidden iframe receives the Google Forms POST response so we can stay on this page. -->
-    <iframe name="school-form-sink" id="school-form-sink" style="display:none" tabindex="-1" aria-hidden="true"></iframe>
-
     <footer class="foot">
       <span>© The School · 2026</span>
       <span><a href="mailto:james@sayinterviews.com">INFO@</a></span>
@@ -739,52 +695,72 @@
 
   <script>
     (function () {
-      const cfg = window.SCHOOL_FORM_CONFIG;
+      const endpoint = window.SCHOOL_SURVEY_ENDPOINT;
       const form = document.getElementById('school-form');
-      const banner = document.getElementById('status-banner');
       const submitBtn = document.getElementById('submit-btn');
+      const submitMsg = document.getElementById('submit-msg');
       const successCard = document.getElementById('success-card');
-      const sink = document.getElementById('school-form-sink');
 
-      // Live clock in hero
+      // Live clock in hero.
       const dateEl = document.getElementById('hero-date');
       const timeEl = document.getElementById('hero-time');
-      function pad(n) { return String(n).padStart(2, '0'); }
+      const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+      const pad = n => String(n).padStart(2, '0');
       function tick() {
         const d = new Date();
-        const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
         dateEl.textContent = pad(d.getDate()) + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
         timeEl.textContent = pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds());
       }
       tick(); setInterval(tick, 1000);
 
-      // Wire form to Google Form, or show the "not configured" banner
-      const isConfigured = cfg.FORM_ID && cfg.FORM_ID !== 'REPLACE_FORM_ID';
-      if (isConfigured) {
-        banner.classList.add('hidden');
-        form.action = 'https://docs.google.com/forms/d/e/' + cfg.FORM_ID + '/formResponse';
-        // Swap each input's name from "entry.ENTRY_KEY" placeholder to the real entry.NUMERIC_ID.
-        form.querySelectorAll('[data-key]').forEach(el => {
-          const key = el.dataset.key;
-          if (cfg[key]) el.name = cfg[key];
+      // Collect form values into a JSON payload. Multi-select fields (checkboxes)
+      // are sent as arrays. Single-select (radios) and text fields are strings.
+      function collect() {
+        const fd = new FormData(form);
+        const out = {};
+        for (const key of new Set(Array.from(fd.keys()))) {
+          const values = fd.getAll(key);
+          out[key] = values.length > 1 ? values : values[0];
+        }
+        // Force the multi-select fields to always be arrays so the server
+        // doesn't have to guess.
+        ['uses', 'when'].forEach(k => {
+          if (out[k] === undefined) out[k] = [];
+          else if (!Array.isArray(out[k])) out[k] = [out[k]];
         });
-      } else {
-        submitBtn.disabled = false; // still allow click → just shows success state without recording
-        submitBtn.title = 'Form backend not yet configured.';
+        return out;
       }
 
-      // After form submits, the hidden iframe loads — swap to success state.
-      let submitted = false;
-      sink.addEventListener('load', function () {
-        if (!submitted) return; // ignore initial load
-        form.querySelectorAll('.section-band, .card:not(.success), .status-banner').forEach(el => el.style.display = 'none');
-        successCard.classList.add('show');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
-      form.addEventListener('submit', function () {
-        submitted = true;
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
         submitBtn.disabled = true;
+        const originalLabel = submitBtn.textContent;
         submitBtn.textContent = 'Sending…';
+        submitMsg.textContent = '';
+
+        try {
+          const res = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(collect()),
+          });
+          if (!res.ok) {
+            const data = await res.json().catch(() => ({}));
+            throw new Error(data.error || ('HTTP ' + res.status));
+          }
+          // Success — hide the form scaffolding, show success card.
+          form.querySelectorAll('.section-band, .card:not(.success)').forEach(el => {
+            el.style.display = 'none';
+          });
+          successCard.classList.add('show');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } catch (err) {
+          console.error('[school-survey] submit failed', err);
+          submitMsg.textContent = 'Something broke — ' + (err.message || 'try again in a moment.');
+          submitMsg.style.color = '#cc3322';
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalLabel;
+        }
       });
     })();
   </script>
