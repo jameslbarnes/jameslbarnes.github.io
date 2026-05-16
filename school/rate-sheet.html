@@ -96,6 +96,44 @@
   .lede .meta .k{ color:var(--mute); }
   .lede .meta .v{ color:var(--ink); text-align:right; }
 
+  /* plans */
+  .plans{
+    padding-top:40px;
+  }
+  .plans-head{
+    display:grid; grid-template-columns: 1fr auto; align-items:baseline;
+    column-gap:24px;
+    padding-bottom:18px;
+  }
+  .plans-head h2{
+    margin:0; font-weight:400; font-size:36px; letter-spacing:-0.015em;
+  }
+  .plans-head .meta{
+    font-size:10.5px; letter-spacing:0.22em; text-transform:uppercase; color:var(--ink); text-align:right;
+  }
+  .plans-head .meta .dim{ color:var(--mute); margin-left:10px; }
+  .plans-frame{
+    border-top:var(--hair) solid var(--ink);
+    padding:24px 0 8px;
+    overflow:hidden;
+  }
+  .plans-frame .crop{
+    display:block; width:100%;
+    aspect-ratio: 1876 / 1080;
+    overflow:hidden;
+  }
+  .plans-frame img{
+    display:block; width:100%; height:auto;
+    filter: grayscale(1) contrast(1.02);
+  }
+  .plans-cap{
+    display:grid; grid-template-columns:1fr 1fr 1fr; column-gap:24px;
+    padding-top:14px;
+    font-size:10.5px; letter-spacing:0.22em; text-transform:uppercase; color:var(--mute);
+  }
+  .plans-cap .c{ text-align:center; color:var(--ink); }
+  .plans-cap .r{ text-align:right; }
+
   /* section block */
   .section{ padding-top:40px; }
 
@@ -213,6 +251,14 @@
     /* sections */
     .section{ padding:12px 0 0; break-inside:avoid; }
     .section + .section{ padding-top:10px; }
+
+    /* plans */
+    .plans{ padding-top:14px; }
+    .plans-head{ padding-bottom:6px; }
+    .plans-head h2{ font-size:16px; }
+    .plans-head .meta{ font-size:7.5px; letter-spacing:0.16em; }
+    .plans-frame{ padding:10px 0 4px; }
+    .plans-cap{ padding-top:6px; font-size:7.5px; letter-spacing:0.16em; }
     .sec-head{ padding-bottom:4px; }
     .sec-head h2{ font-size:16px; }
     .sec-head .meta{ font-size:7.5px; letter-spacing:0.16em; }
@@ -269,6 +315,19 @@
       <span class="k">Term</span><span class="v">Open Lease</span>
       <span class="k">Currency</span><span class="v">USD</span>
       <span class="k">Effective</span><span class="v">Immediately</span>
+    </div>
+  </div>
+
+  <!-- plans -->
+  <div class="plans">
+    <div class="plans-head">
+      <h2>The Building</h2>
+      <div class="meta">Three Floors<span class="dim num">18,000 sf</span></div>
+    </div>
+    <div class="plans-frame">
+      <div class="crop">
+        <img src="floorplan.png" alt="Floor plans of 29 Nassau Ave — second floor, first floor, and lower level">
+      </div>
     </div>
   </div>
 
